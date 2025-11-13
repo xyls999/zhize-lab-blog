@@ -1,0 +1,643 @@
+// ========== 极简高性能静态页面设计 ==========
+// 无复杂动画，快速加载，现代美观
+
+// place your custom styles here
+
+// ========== 全屏滚动布局 (Full-Page Scrolling) ==========
+// 启用 CSS Scroll Snap 实现全屏滚动效果
+html {
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+body {
+  height: 100%;
+  overflow-y: auto;
+}
+
+// 主页容器启用全屏滚动
+.vp-project-home {
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+  height: 100vh;
+
+  // 优化滚动性能
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+
+// ========== 全局优化 ==========
+* {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// 全局基础字体增大
+body {
+  font-size: 16px;
+  
+  @media (min-width: 768px) {
+    font-size: 17px;
+  }
+  
+  @media (min-width: 1200px) {
+    font-size: 18px;
+  }
+}
+
+// 导航栏字体增大
+.vp-navbar {
+  font-size: 16px !important;
+  
+  .vp-nav-link, .vp-nav-item a {
+    font-size: 16px !important;
+    font-weight: 500 !important;
+  }
+  
+  @media (min-width: 768px) {
+    font-size: 17px !important;
+    
+    .vp-nav-link, .vp-nav-item a {
+      font-size: 17px !important;
+    }
+  }
+}
+
+// ========== Hero 主区域 ==========
+// 全局强制所有 Hero 区域占满整个屏幕（减去导航栏高度）
+.vp-hero-info-wrapper {
+  height: calc(100vh - var(--navbar-height)) !important;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.vp-hero-info {
+  flex-direction: column !important;
+  padding: 6rem 2rem !important;
+  gap: 3rem !important;
+  position: relative;
+  // 不需要 min-height，由父容器 .vp-hero-info-wrapper 控制
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  // ⭐ 背景设置 - 简洁背景，无装饰框
+  background: transparent !important;
+  background-image: none !important;
+  
+  [data-theme="dark"] & {
+    background: transparent !important;
+    background-image: none !important;
+  }
+  
+  // 移除所有背景装饰（包括网格、框框等）
+  &::before,
+  &::after {
+    display: none !important;
+    content: none !important;
+    background: none !important;
+    background-image: none !important;
+  }
+  
+  
+
+  // Logo/图片
+  .vp-hero-image {
+    order: -1;
+    margin: 3rem auto 0rem;
+    max-height: 450px !important;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.1));
+    
+    img {
+      transition: transform 0.3s ease;
+    }
+    
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  // 文字内容
+  .vp-hero-infos {
+    order: 1;
+    text-align: center;
+    padding: 1rem 1rem;
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    // 主标题 - 进一步增大字体
+    h1 {
+      font-size: clamp(2.2rem, 8vw, 4.5rem) !important;
+      font-weight: 900 !important;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 2rem !important;
+      
+      // 静态渐变文字
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+
+      [data-theme="dark"] & {
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d299c2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+
+    // 副标题/描述 - 进一步增大字体
+    #main-description {
+      color: rgb(4, 212, 167) !important;
+      font-size: clamp(1.4rem, 2.8vw, 2rem) !important;
+      font-weight: 500;
+      line-height: 1.8;
+      max-width: 850px;
+      margin: 2rem auto 3rem !important;
+      padding: 0 1.5rem;
+
+      [data-theme="dark"] & {
+        color: #cbd5e0 !important;
+      }
+    }
+  }
+
+  // 按钮组
+  .vp-action-wrapper {
+    margin-top: 3rem !important;
+    gap: 1.2rem !important;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .vp-action-button {
+      padding: 1.1rem 2.8rem !important;
+      font-size: 1.15rem !important;
+      font-weight: 600;
+      border-radius: 50px !important;
+      border: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.25);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+
+      // 主按钮
+      &.primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff !important;
+        
+        &:hover {
+          background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+        }
+      }
+
+      // 次按钮
+      &:not(.primary) {
+        background: rgba(255, 255, 255, 0.95);
+        color: #667eea !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        
+        [data-theme="dark"] & {
+          background: rgba(45, 55, 72, 0.95);
+          color: #a8edea !important;
+        }
+
+        &:hover {
+          background: rgba(102, 126, 234, 0.08);
+        }
+      }
+    }
+  }
+}
+
+// ========== Features/Highlights 区域 ==========
+// 每个 Feature/Highlight 区块占满一个屏幕
+.vp-feature-wrapper,
+.vp-highlight-wrapper {
+  min-height: calc(100vh - var(--navbar-height)) !important;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 2rem;
+}
+
+.vp-feature-item,
+.vp-highlight-item {
+  padding: 0.5rem 1rem !important;  // 再缩小一半
+  margin: 0.5rem 0 !important;      // 再缩小一半
+  background: transparent;
+  border: none;
+
+  // 标题 - 增大字体，缩小间距
+  .vp-feature-header,
+  .vp-highlight-header {
+    font-size: clamp(1.8rem, 4.5vw, 2.6rem) !important;  // 增大字体
+    font-weight: 800;
+    margin-bottom: 0.4rem !important;  // 再缩小一半间距
+    text-align: center;
+    
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    
+    [data-theme="dark"] & {
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d299c2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  // 描述 - 增大字体，缩小间距
+  .vp-feature-description,
+  .vp-highlight-description {
+    font-size: clamp(1.1rem, 2vw, 1.35rem);  // 增大字体
+    line-height: 1.4;
+    color: #4a5568;
+    text-align: center;
+    max-width: 750px;
+    margin: 0 auto 0.4rem !important;  // 再缩小一半间距
+
+    [data-theme="dark"] & {
+      color: #cbd5e0;
+    }
+  }
+}
+
+// 子卡片
+.vp-feature-item,
+.vp-highlight-item {
+  .vp-feature,
+  .vp-highlight {
+    padding: 0.5rem !important;    // 再缩小一半
+    margin: 0.4rem !important;     // 再缩小一半
+    border-radius: 10px;
+    transition: all 0.3s ease;
+
+    // 访问记录卡片
+    &:has(.visit-stat-item) {
+      padding: 0.6rem !important;  // 再缩小一半
+      margin: 0.4rem !important;   // 再缩小一半
+    }
+    
+    // 玻璃态背景
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+
+    [data-theme="dark"] & {
+      background: rgba(45, 55, 72, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
+      background: rgba(255, 255, 255, 0.9);
+
+      [data-theme="dark"] & {
+        background: rgba(45, 55, 72, 0.9);
+      }
+    }
+
+    // 卡片标题 - 增大字体，缩小间距
+    .vp-feature-title,
+    .vp-highlight-title {
+      font-size: clamp(1.2rem, 2vw, 1.5rem) !important;  // 增大字体
+      font-weight: 700;
+      margin-bottom: 0.25rem !important;  // 再缩小一半间距
+      color: #2d3748;
+
+      [data-theme="dark"] & {
+        color: #e2e8f0;
+      }
+    }
+
+    // 卡片内容 - 增大字体
+    .vp-feature-details,
+    .vp-highlight-details {
+      font-size: clamp(1rem, 1.5vw, 1.2rem);  // 增大字体
+      line-height: 1.3;
+      color: #718096;
+
+      [data-theme="dark"] & {
+        color: #a0aec0;
+      }
+    }
+  }
+}
+
+// ========== 响应式设计 ==========
+@media (max-width: 1200px) {
+  .vp-hero-info {
+    padding: 5rem 1.5rem !important;
+  }
+
+  .vp-feature-wrapper,
+  .vp-highlight-wrapper {
+    padding: 3rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  // 移动端也保持全屏滚动效果
+  .vp-feature-wrapper,
+  .vp-highlight-wrapper {
+    min-height: 100vh !important;
+    padding: 2rem 1rem;
+  }
+
+  .vp-hero-info {
+    padding: 3rem 1rem !important;
+    // 移除 min-height: auto，让全屏效果在移动端也生效
+    
+    .vp-hero-image {
+      max-height: 300px !important;
+      margin: 1.5rem auto 0.5rem;
+    }
+
+    .vp-hero-infos {
+      padding: 1rem 0.5rem;
+      
+      #main-description {
+        padding: 0 1rem;
+        margin: 1.5rem auto 2rem !important;
+      }
+    }
+
+    .vp-action-wrapper {
+      flex-direction: column;
+      padding: 0 1rem;
+      gap: 1rem !important;
+
+      .vp-action-button {
+        width: 100%;
+        padding: 0.9rem 2rem !important;
+        font-size: 1.1rem !important;
+      }
+    }
+  }
+  
+  .vp-feature-item,
+  .vp-highlight-item {
+    padding: 0.3rem 0.5rem !important;
+    margin: 0.2rem 0 !important;  // 再缩小一半
+
+    .vp-feature,
+    .vp-highlight {
+      padding: 0.4rem !important;  // 再缩小
+      margin: 0.2rem !important;   // 再缩小一半
+    }
+
+    // 移动端访问统计卡片调整
+    .vp-highlights-wrapper {
+      flex-direction: column !important;  // 小屏幕竖向排列
+      gap: 1rem !important;
+
+      .vp-highlight {
+        flex: 1 1 auto !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .vp-feature-wrapper,
+  .vp-highlight-wrapper {
+    padding: 1.5rem 0.8rem;
+  }
+
+  .vp-hero-info {
+    padding: 2rem 0.8rem !important;
+
+    .vp-hero-image {
+      max-height: 250px !important;
+    }
+
+    .vp-action-wrapper {
+      .vp-action-button {
+        padding: 0.8rem 1.5rem !important;
+        font-size: 1.05rem !important;
+      }
+    }
+  }
+}
+
+// ========== Portfolio 页面样式 ==========
+.vp-portfolio-info {
+  // Portfolio 页面标题样式
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem) !important;
+    font-weight: 900 !important;
+  }
+  
+  // 姓名样式
+  .vp-portfolio-name {
+    font-size: clamp(2rem, 5vw, 3.5rem) !important;
+    font-weight: 800 !important;
+  }
+  
+  // 职位标题
+  .vp-portfolio-titles {
+    li {
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem) !important;
+      font-weight: 500 !important;
+    }
+  }
+  
+  // 头像样式
+  .vp-portfolio-avatar {
+    max-width: 300px !important;
+    max-height: 300px !important;
+    margin: 2rem auto;
+  }
+  
+  // 内容区域字体
+  .vp-page {
+    font-size: clamp(1.1rem, 2vw, 1.4rem) !important;
+    line-height: 1.8;
+    
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem) !important;
+      font-weight: 800 !important;
+    }
+    
+    h3 {
+      font-size: clamp(1.5rem, 3vw, 2rem) !important;
+      font-weight: 700 !important;
+    }
+    
+    p {
+      font-size: clamp(1.1rem, 2vw, 1.4rem) !important;
+      line-height: 1.8;
+    }
+  }
+}
+
+// ========== 访问记录区域特殊样式 ==========
+.vp-highlight-item {
+  // 隐藏访问记录的图片
+  .vp-highlight-image,
+  .vp-feature-image {
+    display: none !important;
+  }
+
+  // ⭐ 让访问统计的两个卡片横向排列
+  .vp-highlights-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    gap: 2rem !important;
+    flex-wrap: wrap !important;
+
+    // 每个统计卡片
+    .vp-highlight {
+      flex: 1 1 300px !important;  // 弹性布局，最小宽度 300px
+      max-width: 500px !important;  // 最大宽度限制
+      min-width: 250px !important;  // 最小宽度限制
+    }
+  }
+
+  // 访问统计数字样式 - 增大字体，缩小间距
+  .visit-stat-item {
+    text-align: center;
+    padding: 0.3rem !important;  // 再缩小一半内边距
+
+    .visit-number {
+      margin-bottom: 0.15rem !important;  // 再缩小一半间距
+
+      .stat-number {
+        font-size: clamp(2.2rem, 4.5vw, 3.2rem) !important;  // 增大数字字体
+        font-weight: 900;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: block;
+
+        [data-theme="dark"] & {
+          background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+      }
+    }
+
+    .visit-label {
+      font-size: clamp(1.15rem, 2.2vw, 1.5rem) !important;  // 增大字体
+      font-weight: 600;
+      color: #4a5568;
+
+      [data-theme="dark"] & {
+        color: #cbd5e0;
+      }
+    }
+  }
+  
+  // 访问者列表样式
+  .visitor-list {
+    padding: 2rem;
+    
+    .visitor-placeholder {
+      text-align: center;
+      padding: 3rem 2rem;
+      
+      .placeholder-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+      }
+      
+      .placeholder-text {
+        font-size: clamp(1.3rem, 2.5vw, 1.8rem) !important;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+        
+        [data-theme="dark"] & {
+          color: #e2e8f0;
+        }
+      }
+      
+      .placeholder-desc {
+        font-size: clamp(1rem, 1.8vw, 1.2rem) !important;
+        color: #718096;
+        
+        [data-theme="dark"] & {
+          color: #a0aec0;
+        }
+      }
+    }
+  }
+}
+
+// ========== 移除所有网格和框框背景装饰 ==========
+.theme-container,
+.vp-page,
+body {
+  // 移除可能的网格背景
+  background-image: none !important;
+  
+  &::before,
+  &::after {
+    background-image: none !important;
+  }
+}
+
+// 移除特定元素的装饰背景
+[class*="grid"],
+[class*="pattern"],
+[class*="decoration"] {
+  background-image: none !important;
+  &::before,
+  &::after {
+    display: none !important;
+  }
+}
+
+// ========== 性能优化 ==========
+img {
+  content-visibility: auto;
+}
+
+.vp-feature,
+.vp-highlight {
+  contain: layout style paint;
+}
+
+// ========== 打印样式 aaa 网页文康==========
+@media print {
+  .vp-hero-info::after {
+    display: none;
+  }
+  
+  .vp-hero-info,
+  .vp-feature-item,
+  .vp-highlight-item {
+    box-shadow: none !important;
+    background: white !important;
+  }
+}
